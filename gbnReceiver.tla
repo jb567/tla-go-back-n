@@ -1,7 +1,7 @@
 ---------------------------- MODULE gbnReceiver ----------------------------
 EXTENDS Sequences, Naturals, TLC
 
-CONSTANT Corruption
+CONSTANT CORRUPT_DATA
 
 (*--algorithm GoBackNReceiver
 variables
@@ -14,7 +14,7 @@ variables
 define
     RECURSIVE DropCorrupt(_)
     DropCorrupt(packets) == IF packets = <<>> THEN <<>>
-                            ELSE IF Head(packets) = Corruption THEN DropCorrupt(Tail(packets))
+                            ELSE IF Head(packets) = CORRUPT_DATA THEN DropCorrupt(Tail(packets))
                             ELSE <<Head(packets)>> \o DropCorrupt(Tail(packets))
 \*    SeqMap(Op(_), seq) == [x \in DOMAIN seq |-> Op(seq[x])]
     RECURSIVE SeqMap(_,_)
@@ -43,7 +43,7 @@ begin A:
 while TRUE do
     await /\ state = "WAITING"
           /\ inputWire # <<>>;
-    if Head(inputWire) # Corruption /\ Head(inputWire)[2] = "SYNACK" then
+    if Head(inputWire) # CORRUPT_DATA /\ Head(inputWire)[2] = "SYNACK" then
         state := "OPEN";
     end if;
     inputWire := <<>>;
@@ -87,7 +87,7 @@ VARIABLES output, outputWire, ackSeqNum, state, inputWire
 (* define statement *)
 RECURSIVE DropCorrupt(_)
 DropCorrupt(packets) == IF packets = <<>> THEN <<>>
-                        ELSE IF Head(packets) = Corruption THEN DropCorrupt(Tail(packets))
+                        ELSE IF Head(packets) = CORRUPT_DATA THEN DropCorrupt(Tail(packets))
                         ELSE <<Head(packets)>> \o DropCorrupt(Tail(packets))
 
 RECURSIVE SeqMap(_,_)
@@ -120,7 +120,7 @@ SYN == /\ /\ state = "WAITING"
 
 FirstAck == /\ /\ state = "WAITING"
                /\ inputWire # <<>>
-            /\ IF Head(inputWire) # Corruption /\ Head(inputWire)[2] = "SYNACK"
+            /\ IF Head(inputWire) # CORRUPT_DATA /\ Head(inputWire)[2] = "SYNACK"
                   THEN /\ state' = "OPEN"
                   ELSE /\ TRUE
                        /\ state' = state

@@ -1,7 +1,7 @@
 ------------------------------ MODULE dataWire ------------------------------
 EXTENDS Sequences, TLC, Naturals
 
-CONSTANTS Corruption
+CONSTANTS CORRUPT_DATA
 
 (* --algorithm DataWire
 variables
@@ -13,13 +13,13 @@ define
 DropRandom(input1) == LET n == CHOOSE n \in 1..Len(input1) : TRUE
                      IN SubSeq(input1, 1, n) \o SubSeq(input1, n+2, Len(input1))
 CorruptRandom(input2) == LET n == CHOOSE n \in 1..Len(input2) : TRUE
-                        IN SubSeq(input2, 1, n) \o <<Corruption>> \o SubSeq(input2, n+2, Len(input2))
+                        IN SubSeq(input2, 1, n) \o <<CORRUPT_DATA>> \o SubSeq(input2, n+2, Len(input2))
 
 
 
 RECURSIVE CorruptLen2(_)
 CorruptLen2(i) == IF i = 0 THEN <<>>
-                  ELSE <<Corruption>> \o CorruptLen2(i-1)
+                  ELSE <<CORRUPT_DATA>> \o CorruptLen2(i-1)
 CorruptLen(input3) == CorruptLen2(Len(input3))
 
 end define;
@@ -82,13 +82,13 @@ VARIABLES input, output
 DropRandom(input1) == LET n == CHOOSE n \in 1..Len(input1) : TRUE
                      IN SubSeq(input1, 1, n) \o SubSeq(input1, n+2, Len(input1))
 CorruptRandom(input2) == LET n == CHOOSE n \in 1..Len(input2) : TRUE
-                        IN SubSeq(input2, 1, n) \o <<Corruption>> \o SubSeq(input2, n+2, Len(input2))
+                        IN SubSeq(input2, 1, n) \o <<CORRUPT_DATA>> \o SubSeq(input2, n+2, Len(input2))
 
 
 
 RECURSIVE CorruptLen2(_)
 CorruptLen2(i) == IF i = 0 THEN <<>>
-                  ELSE <<Corruption>> \o CorruptLen2(i-1)
+                  ELSE <<CORRUPT_DATA>> \o CorruptLen2(i-1)
 CorruptLen(input3) == CorruptLen2(Len(input3))
 
 
@@ -130,5 +130,5 @@ Spec == /\ Init /\ [][Next]_vars
 Fairness == /\ SF_vars(sendNormally)
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 03 12:36:05 NZST 2019 by jb567
+\* Last modified Mon Jun 17 00:59:40 NZST 2019 by jb567
 \* Created Sat Jun 01 15:52:42 NZST 2019 by jb567

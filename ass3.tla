@@ -1,6 +1,6 @@
 -------------------------------- MODULE ass3 --------------------------------
 EXTENDS TLC, Sequences, Naturals
-CONSTANTS MESSAGE, WINDOW_SIZE, Corruption
+CONSTANTS MESSAGE, WINDOW_SIZE, CORRUPT_DATA
 
 VARIABLES
     dataWireIn,
@@ -18,7 +18,6 @@ VARIABLES
 VARIABLES buffer, n
 
 vars == <<dataWireIn, dataWireOut, ackWireIn, ackWireOut, senderIdx, senderPc, output, ackSeqNum, senderState, receiverState, buffer, n>>
-
 
 sender == INSTANCE slidingSender WITH inputWire <- ackWireOut , outputWire <- dataWireIn, state <- senderState,
             slidingIdx <- senderIdx, pc <- senderPc
@@ -58,5 +57,5 @@ Properties == /\ <>[](output = MESSAGE)
               \*/\ [](LET x == Len(output) IN output # MESSAGE ~> (Len(output) >= x))
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 00:19:22 NZST 2019 by jb567
+\* Last modified Mon Jun 17 00:58:49 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:20 NZST 2019 by jb567

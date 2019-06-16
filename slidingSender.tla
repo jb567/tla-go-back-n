@@ -1,6 +1,6 @@
 --------------------------- MODULE slidingSender ---------------------------
 EXTENDS Naturals, Sequences, TLC
-CONSTANTS MESSAGE, WINDOW_SIZE, Corruption
+CONSTANTS MESSAGE, WINDOW_SIZE, CORRUPT_DATA
 ASSUME WINDOW_SIZE \in 0..99
 
 
@@ -26,7 +26,7 @@ fair process ReceiveSyn = "SynAck"
 begin A:
 while state = "WAITING" do
     await inputWire # <<>>;
-    if inputWire[1] # Corruption then
+    if inputWire[1] # CORRUPT_DATA then
         state := "OPENING"
     end if;
     inputWire := <<>>;
@@ -45,7 +45,7 @@ fair process ReceiveFirstAck = "ReceiveButFirst"
 begin A:
 while TRUE do
     await state = "OPENING" /\ inputWire # <<>>;
-    if Head(inputWire) # Corruption /\ Head(inputWire)[1] = "ACK" /\ Head(inputWire)[2] = slidingIdx-1 then
+    if Head(inputWire) # CORRUPT_DATA /\ Head(inputWire)[1] = "ACK" /\ Head(inputWire)[2] = slidingIdx-1 then
         state := "OPEN";
     end if;
     inputWire := Tail(inputWire);
@@ -68,7 +68,7 @@ begin A:
 while TRUE do
     await /\ inputWire # <<>>
           /\ state = "OPEN";
-    if Head(inputWire) # Corruption /\ Head(inputWire)[2] >= slidingIdx then
+    if Head(inputWire) # CORRUPT_DATA /\ Head(inputWire)[2] >= slidingIdx then
         slidingIdx := Head(inputWire)[2] + 1;
     end if;
     inputWire := Tail(inputWire);
@@ -121,7 +121,7 @@ Init == (* Global variables *)
 A_ == /\ pc["SynAck"] = "A_"
       /\ IF state = "WAITING"
             THEN /\ inputWire # <<>>
-                 /\ IF inputWire[1] # Corruption
+                 /\ IF inputWire[1] # CORRUPT_DATA
                        THEN /\ state' = "OPENING"
                        ELSE /\ TRUE
                             /\ state' = state
@@ -143,7 +143,7 @@ SendSynAck == A_S
 
 A_R == /\ pc["ReceiveButFirst"] = "A_R"
        /\ state = "OPENING" /\ inputWire # <<>>
-       /\ IF Head(inputWire) # Corruption /\ Head(inputWire)[1] = "ACK" /\ Head(inputWire)[2] = slidingIdx-1
+       /\ IF Head(inputWire) # CORRUPT_DATA /\ Head(inputWire)[1] = "ACK" /\ Head(inputWire)[2] = slidingIdx-1
              THEN /\ state' = "OPEN"
              ELSE /\ TRUE
                   /\ state' = state
@@ -166,7 +166,7 @@ sendWindow == A_s
 A == /\ pc["ACK"] = "A"
      /\ /\ inputWire # <<>>
         /\ state = "OPEN"
-     /\ IF Head(inputWire) # Corruption /\ Head(inputWire)[2] >= slidingIdx
+     /\ IF Head(inputWire) # CORRUPT_DATA /\ Head(inputWire)[2] >= slidingIdx
            THEN /\ slidingIdx' = Head(inputWire)[2] + 1
            ELSE /\ TRUE
                 /\ UNCHANGED slidingIdx
