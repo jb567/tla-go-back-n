@@ -1,0 +1,17 @@
+strict digraph DiskGraph {
+edge [colorscheme="paired12"]
+nodesep=0.35;
+subgraph cluster_graph {
+color="white";
+-735412878784408076 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 0\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\"",style = filled]
+-735412878784408076 -> -3815907273242695562 [label="",color="2",fontcolor="2"];
+-3815907273242695562 [label="/\\ senderState = \"OPENING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 0\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\""];
+-3815907273242695562 -> 7369796213010846270 [label="",color="2",fontcolor="2"];
+7369796213010846270 [label="/\\ senderState = \"OPENING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 0\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"OPEN\""];
+7369796213010846270 -> 7646655830059078607 [label="",color="2",fontcolor="2"];
+7646655830059078607 [label="/\\ senderState = \"OPEN\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 0\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"OPEN\""];
+{rank = same; -735412878784408076;}
+{rank = same; -3815907273242695562;}
+{rank = same; 7369796213010846270;}
+}
+}
