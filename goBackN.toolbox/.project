@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>goBackN</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>toolbox.builder.TLAParserBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>toolbox.natures.TLANature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>ass3.tla</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/ass3.tla</locationURI>
+		</link>
+		<link>
+			<name>dataWire.tla</name>
+			<type>1</type>
+			<location>/home/jb567/projects/tla-go-back-n/dataWire.tla</location>
+		</link>
+		<link>
+			<name>gbnReceiver.tla</name>
+			<type>1</type>
+			<location>/home/jb567/projects/tla-go-back-n/gbnReceiver.tla</location>
+		</link>
+		<link>
+			<name>mpb.tla</name>
+			<type>1</type>
+			<location>/home/jb567/projects/tla-go-back-n/mpb.tla</location>
+		</link>
+		<link>
+			<name>slidingSender.tla</name>
+			<type>1</type>
+			<location>/home/jb567/projects/tla-go-back-n/slidingSender.tla</location>
+		</link>
+	</linkedResources>
+</projectDescription>
