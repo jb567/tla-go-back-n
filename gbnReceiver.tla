@@ -8,7 +8,7 @@ variables
     output = <<>>,
     outputWire = <<>>,
     ackSeqNum = 0,
-    
+    state = "WAITING",
     inputWire = <<>>;
 
 define
@@ -29,19 +29,32 @@ define
                                 ELSE 0
 end define;
 
-\*fair+ process SYN = "SYN"
-\*begin A:
-\*while TRUE do
-\*    await /\ inputWire # <<>>;
-\*    outputWire :=  
-\*end while;
-\*end process;
+fair process SYN = "SYN"
+begin A:
+while TRUE do
+    await /\ state = "WAITING"
+          /\ outputWire = <<>>;
+    outputWire := <<<<"SYN", ackSeqNum>>>>
+end while;
+end process;
+
+fair process FirstAck = "ACK"
+begin A:
+while TRUE do
+    await /\ state = "WAITING"
+          /\ inputWire # <<>>;
+    if Head(inputWire) # Corruption /\ Head(inputWire)[2] = "SYNACK" then
+        state := "OPEN";
+    end if;
+    inputWire := <<>>;
+end while;
+end process;
 
 fair process receiver = "GBN Receiver"
 begin A:
 while TRUE do
-    await /\ inputWire # <<>>;
-    print(DropCorrupt(inputWire));
+    await /\ inputWire # <<>>
+          /\ state = "OPEN";
     output := output \o 
         SeqMap(
             Second,
@@ -56,8 +69,9 @@ end process;
 fair process sender = "GBN Receiver ACK"
 begin A:
 while TRUE do
-    await /\ outputWire = <<>>;
-    outputWire := <<ackSeqNum>>;
+    await /\ outputWire = <<>>
+          /\ state = "OPEN";
+    outputWire := << <<"ACK", ackSeqNum>> >>;
 end while;
 end process;
 
@@ -65,8 +79,10 @@ end process;
 end algorithm;
 *)
 \* BEGIN TRANSLATION
-\* Label A of process receiver at line 42 col 1 changed to A_
-VARIABLES output, outputWire, ackSeqNum, inputWire
+\* Label A of process SYN at line 34 col 1 changed to A_
+\* Label A of process FirstAck at line 43 col 1 changed to A_F
+\* Label A of process receiver at line 55 col 1 changed to A_r
+VARIABLES output, outputWire, ackSeqNum, state, inputWire
 
 (* define statement *)
 RECURSIVE DropCorrupt(_)
@@ -86,18 +102,33 @@ TakeN(items,acceptedIdx) == IF Len(items) = 0 THEN 0
                             ELSE 0
 
 
-vars == << output, outputWire, ackSeqNum, inputWire >>
+vars == << output, outputWire, ackSeqNum, state, inputWire >>
 
-ProcSet == {"GBN Receiver"} \cup {"GBN Receiver ACK"}
+ProcSet == {"SYN"} \cup {"ACK"} \cup {"GBN Receiver"} \cup {"GBN Receiver ACK"}
 
 Init == (* Global variables *)
         /\ output = <<>>
         /\ outputWire = <<>>
         /\ ackSeqNum = 0
+        /\ state = "WAITING"
         /\ inputWire = <<>>
 
+SYN == /\ /\ state = "WAITING"
+          /\ outputWire = <<>>
+       /\ outputWire' = <<<<"SYN", ackSeqNum>>>>
+       /\ UNCHANGED << output, ackSeqNum, state, inputWire >>
+
+FirstAck == /\ /\ state = "WAITING"
+               /\ inputWire # <<>>
+            /\ IF Head(inputWire) # Corruption /\ Head(inputWire)[2] = "SYNACK"
+                  THEN /\ state' = "OPEN"
+                  ELSE /\ TRUE
+                       /\ state' = state
+            /\ inputWire' = <<>>
+            /\ UNCHANGED << output, outputWire, ackSeqNum >>
+
 receiver == /\ /\ inputWire # <<>>
-            /\ PrintT((DropCorrupt(inputWire)))
+               /\ state = "OPEN"
             /\ output' =       output \o
                          SeqMap(
                              Second,
@@ -106,23 +137,29 @@ receiver == /\ /\ inputWire # <<>>
                          )
             /\ ackSeqNum' = ackSeqNum + TakeN(DropCorrupt(inputWire), ackSeqNum)
             /\ inputWire' = <<>>
-            /\ UNCHANGED outputWire
+            /\ UNCHANGED << outputWire, state >>
 
 sender == /\ /\ outputWire = <<>>
-          /\ outputWire' = <<ackSeqNum>>
-          /\ UNCHANGED << output, ackSeqNum, inputWire >>
+             /\ state = "OPEN"
+          /\ outputWire' = << <<"ACK", ackSeqNum>> >>
+          /\ UNCHANGED << output, ackSeqNum, state, inputWire >>
 
-Next == receiver \/ sender
+Next == SYN \/ FirstAck \/ receiver \/ sender
 
 Spec == /\ Init /\ [][Next]_vars
+        /\ WF_vars(SYN)
+        /\ WF_vars(FirstAck)
         /\ WF_vars(receiver)
         /\ WF_vars(sender)
 
 \* END TRANSLATION
 Fairness == /\ WF_vars(receiver)
             /\ WF_vars(sender)
+            /\ WF_vars(SYN)
+            /\ WF_vars(FirstAck)
+            
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 03 12:31:58 NZST 2019 by jb567
+\* Last modified Mon Jun 17 00:06:33 NZST 2019 by jb567
 \* Created Mon Jun 03 09:20:20 NZST 2019 by jb567

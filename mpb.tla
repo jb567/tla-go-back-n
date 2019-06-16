@@ -35,8 +35,8 @@ Next == \/ SendN /\ UNCHANGED <<output, index>>
         
 Spec == /\ Init
         /\ [][Next]_vars
-        /\ <>[](
+
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 03 12:24:24 NZST 2019 by jb567
+\* Last modified Mon Jun 17 00:17:06 NZST 2019 by jb567
 \* Created Mon Jun 03 12:09:13 NZST 2019 by jb567
