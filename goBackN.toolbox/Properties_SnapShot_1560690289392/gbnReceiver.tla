@@ -12,34 +12,23 @@ variables
     inputWire = <<>>;
 
 define
-    \* This will strip all corrupt packets out, as corrupt packets break the TakeWhile operation
     RECURSIVE DropCorrupt(_)
     DropCorrupt(packets) == IF packets = <<>> THEN <<>>
                             ELSE IF Head(packets) = CORRUPT_DATA THEN DropCorrupt(Tail(packets))
                             ELSE <<Head(packets)>> \o DropCorrupt(Tail(packets))
-
-    \* A simple Map operator for sequences
+\*    SeqMap(Op(_), seq) == [x \in DOMAIN seq |-> Op(seq[x])]
     RECURSIVE SeqMap(_,_)
-    \*    SeqMap(Op(_), seq) == [x \in DOMAIN seq |-> Op(seq[x])]
+    
     SeqMap(op(_), seq) == IF Len(seq) = 0 THEN <<>>
                           ELSE <<op(Head(seq))>> \o SeqMap(op, Tail(seq))
     
-    \* A function to take the second item from a sequence (used with seq map to extract packet data)
     Second(item) == item[2]
-    
-    \* Will return the longest subsequence of correct/acceptable packets
-    RECURSIVE TakeWhile(_,_)
-    TakeWhile(items,acceptedIdx) == IF Len(items) = 0 THEN 0
-                                ELSE IF Head(items)[1] = acceptedIdx + 1 THEN 1 + TakeWhile(Tail(items), acceptedIdx + 1)
+    RECURSIVE TakeN(_,_)
+    TakeN(items,acceptedIdx) == IF Len(items) = 0 THEN 0
+                                ELSE IF Head(items)[1] = acceptedIdx + 1 THEN 1 + TakeN(Tail(items), acceptedIdx + 1)
                                 ELSE 0
 end define;
 
-\* ===================
-\* TCP HANDSHAKE START
-\* ===================
-
-\* This represents the first stage of opening a connection, the request for a connection to be formed
-\* This simply repeats a message constantly until a connection is established
 fair process SYN = "SYN"
 begin A:
 while TRUE do
@@ -49,10 +38,6 @@ while TRUE do
 end while;
 end process;
 
-\* This is the receiver for the TCP Handshake
-\* Because of the way the 3 way handshake works after this second element is received, the 
-\* last message is a "normal" ACK, this special ACK exists to make sure the SYNACK is
-\* not considered part of the normal message
 fair process FirstAck = "ACK"
 begin A:
 while TRUE do
@@ -65,12 +50,6 @@ while TRUE do
 end while;
 end process;
 
-\* =================
-\* TCP HANDSHAKE END
-\* =================
-
-\* Receives messages from the input
-\* Put 
 fair process receiver = "GBN Receiver"
 begin A:
 while TRUE do
@@ -80,9 +59,9 @@ while TRUE do
         SeqMap(
             Second,
             SubSeq(DropCorrupt(inputWire), 1, 
-                TakeWhile(DropCorrupt(inputWire), ackSeqNum))
+                TakeN(DropCorrupt(inputWire), ackSeqNum))
         );
-    ackSeqNum := ackSeqNum + TakeWhile(DropCorrupt(inputWire), ackSeqNum);
+    ackSeqNum := ackSeqNum + TakeN(DropCorrupt(inputWire), ackSeqNum);
     inputWire := <<>>;
 end while;
 end process;
@@ -100,9 +79,9 @@ end process;
 end algorithm;
 *)
 \* BEGIN TRANSLATION
-\* Label A of process SYN at line 38 col 1 changed to A_
-\* Label A of process FirstAck at line 47 col 1 changed to A_F
-\* Label A of process receiver at line 59 col 1 changed to A_r
+\* Label A of process SYN at line 34 col 1 changed to A_
+\* Label A of process FirstAck at line 43 col 1 changed to A_F
+\* Label A of process receiver at line 55 col 1 changed to A_r
 VARIABLES output, outputWire, ackSeqNum, state, inputWire
 
 (* define statement *)
@@ -111,18 +90,15 @@ DropCorrupt(packets) == IF packets = <<>> THEN <<>>
                         ELSE IF Head(packets) = CORRUPT_DATA THEN DropCorrupt(Tail(packets))
                         ELSE <<Head(packets)>> \o DropCorrupt(Tail(packets))
 
-
 RECURSIVE SeqMap(_,_)
 
 SeqMap(op(_), seq) == IF Len(seq) = 0 THEN <<>>
                       ELSE <<op(Head(seq))>> \o SeqMap(op, Tail(seq))
 
-
 Second(item) == item[2]
-
-RECURSIVE TakeWhile(_,_)
-TakeWhile(items,acceptedIdx) == IF Len(items) = 0 THEN 0
-                            ELSE IF Head(items)[1] = acceptedIdx + 1 THEN 1 + TakeWhile(Tail(items), acceptedIdx + 1)
+RECURSIVE TakeN(_,_)
+TakeN(items,acceptedIdx) == IF Len(items) = 0 THEN 0
+                            ELSE IF Head(items)[1] = acceptedIdx + 1 THEN 1 + TakeN(Tail(items), acceptedIdx + 1)
                             ELSE 0
 
 
@@ -157,9 +133,9 @@ receiver == /\ /\ inputWire # <<>>
                          SeqMap(
                              Second,
                              SubSeq(DropCorrupt(inputWire), 1,
-                                 TakeWhile(DropCorrupt(inputWire), ackSeqNum))
+                                 TakeN(DropCorrupt(inputWire), ackSeqNum))
                          )
-            /\ ackSeqNum' = ackSeqNum + TakeWhile(DropCorrupt(inputWire), ackSeqNum)
+            /\ ackSeqNum' = ackSeqNum + TakeN(DropCorrupt(inputWire), ackSeqNum)
             /\ inputWire' = <<>>
             /\ UNCHANGED << outputWire, state >>
 
@@ -185,5 +161,5 @@ Fairness == /\ WF_vars(receiver)
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 02:00:48 NZST 2019 by jb567
+\* Last modified Mon Jun 17 00:06:33 NZST 2019 by jb567
 \* Created Mon Jun 03 09:20:20 NZST 2019 by jb567

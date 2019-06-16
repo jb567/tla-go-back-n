@@ -2,7 +2,7 @@
 <launchConfiguration type="org.lamport.tla.toolbox.tool.tlc.modelCheck">
     <stringAttribute key="TLCCmdLineParameters" value=""/>
     <booleanAttribute key="collectCoverage" value="true"/>
-    <stringAttribute key="configurationName" value="Properties"/>
+    <stringAttribute key="configurationName" value="Properties_SnapShot_1560690733996"/>
     <booleanAttribute key="deferLiveness" value="false"/>
     <intAttribute key="dfidDepth" value="100"/>
     <booleanAttribute key="dfidMode" value="false"/>
@@ -28,7 +28,6 @@
     <listAttribute key="modelCorrectnessProperties">
         <listEntry value="1Properties"/>
         <listEntry value="0[](output # MESSAGE)"/>
-        <listEntry value="0Tcp!Spec"/>
     </listAttribute>
     <stringAttribute key="modelExpressionEval" value=""/>
     <stringAttribute key="modelParameterActionConstraint" value=""/>

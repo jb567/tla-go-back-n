@@ -29,7 +29,7 @@ while state = "WAITING" do
     if inputWire[1] # CORRUPT_DATA then
         state := "OPENING"
     end if;
-    inputWire := Tail(inputWire);
+    inputWire := <<>>;
 end while;
 end process;
 
@@ -125,7 +125,7 @@ A_ == /\ pc["SynAck"] = "A_"
                        THEN /\ state' = "OPENING"
                        ELSE /\ TRUE
                             /\ state' = state
-                 /\ inputWire' = Tail(inputWire)
+                 /\ inputWire' = <<>>
                  /\ pc' = [pc EXCEPT !["SynAck"] = "A_"]
             ELSE /\ pc' = [pc EXCEPT !["SynAck"] = "Done"]
                  /\ UNCHANGED << inputWire, state >>
@@ -196,5 +196,5 @@ Fairness == /\ WF_vars(ReceiveSyn)
 \*            /\ WF_vars(timeOut_)
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 01:14:17 NZST 2019 by jb567
+\* Last modified Mon Jun 17 00:13:05 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:37 NZST 2019 by jb567

@@ -40,5 +40,10 @@
 			<type>1</type>
 			<location>/home/jb567/projects/tla-go-back-n/slidingSender.tla</location>
 		</link>
+		<link>
+			<name>tcp.tla</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/tcp.tla</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

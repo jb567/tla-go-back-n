@@ -28,7 +28,7 @@ ackWire == INSTANCE dataWire WITH input <- ackWireIn, output <- ackWireOut
 receiver == INSTANCE gbnReceiver WITH inputWire <- dataWireOut, outputWire <- ackWireIn, state <- receiverState
 
 multiplace == INSTANCE mpb WITH index <- senderIdx
-
+Tcp == INSTANCE tcp
 
 Init == /\ sender!Init
         /\ receiver!Init
@@ -51,11 +51,14 @@ Fairness == /\ sender!Fairness
 Spec == /\ Init
         /\ [][Next]_vars
         /\ Fairness
-      
+
+              \* In the future the message will eventually be received, and it will not be corrupted
 Properties == /\ <>[](output = MESSAGE)
+              \* The output received will always be a partially completed message
               /\ [](output = <<>> \/ \E x \in (1..(Len(MESSAGE))): output = SubSeq(MESSAGE,1,x))
+              \*/\ [](output # MESSAGE => dataWire!Next ~> sender!Next)
               \*/\ [](LET x == Len(output) IN output # MESSAGE ~> (Len(output) >= x))
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 00:58:49 NZST 2019 by jb567
+\* Last modified Mon Jun 17 02:06:47 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:20 NZST 2019 by jb567

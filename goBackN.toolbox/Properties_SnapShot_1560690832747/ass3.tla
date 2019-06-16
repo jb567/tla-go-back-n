@@ -28,7 +28,7 @@ ackWire == INSTANCE dataWire WITH input <- ackWireIn, output <- ackWireOut
 receiver == INSTANCE gbnReceiver WITH inputWire <- dataWireOut, outputWire <- ackWireIn, state <- receiverState
 
 multiplace == INSTANCE mpb WITH index <- senderIdx
-Tcp == INSTANCE tcp
+
 
 Init == /\ sender!Init
         /\ receiver!Init
@@ -60,5 +60,5 @@ Properties == /\ <>[](output = MESSAGE)
               \*/\ [](LET x == Len(output) IN output # MESSAGE ~> (Len(output) >= x))
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 02:06:47 NZST 2019 by jb567
+\* Last modified Mon Jun 17 01:08:37 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:20 NZST 2019 by jb567
