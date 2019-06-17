@@ -1,0 +1,11 @@
+strict digraph DiskGraph {
+edge [colorscheme="paired12"]
+nodesep=0.35;
+subgraph cluster_graph {
+color="white";
+9050006386232024736 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 0\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\"",style = filled]
+9050006386232024736 -> 2473077121478709877 [label="",color="2",fontcolor="2"];
+2473077121478709877 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 1\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<1>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\""];
+{rank = same; 9050006386232024736;}
+}
+}

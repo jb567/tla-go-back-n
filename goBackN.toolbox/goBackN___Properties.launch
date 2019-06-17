@@ -28,7 +28,7 @@
     <listAttribute key="modelCorrectnessProperties">
         <listEntry value="1Properties"/>
         <listEntry value="0[](output # MESSAGE)"/>
-        <listEntry value="0Tcp!Spec"/>
+        <listEntry value="1Tcp!Spec"/>
     </listAttribute>
     <stringAttribute key="modelExpressionEval" value=""/>
     <stringAttribute key="modelParameterActionConstraint" value=""/>
