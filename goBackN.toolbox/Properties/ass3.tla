@@ -47,6 +47,10 @@ Fairness == /\ sender!Fairness
             /\ dataWire!Fairness
             /\ ackWire!Fairness
             /\ receiver!Fairness
+            /\ SF_vars(/\ dataWire!Next
+                       /\ \A x \in 1..Len(dataWireOut): dataWireOut'[x] # CORRUPT_DATA
+                       /\ Len(dataWireOut) = WINDOW_SIZE
+                       /\ Head(dataWireOut')[1] = ackSeqNum + 1)
   
 Spec == /\ Init
         /\ [][Next]_vars
@@ -58,7 +62,8 @@ Properties == /\ <>[](output = MESSAGE)
               /\ [](output = <<>> \/ \E x \in (1..(Len(MESSAGE))): output = SubSeq(MESSAGE,1,x))
               \*/\ [](output # MESSAGE => dataWire!Next ~> sender!Next)
               \*/\ [](LET x == Len(output) IN output # MESSAGE ~> (Len(output) >= x))
+
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 02:06:47 NZST 2019 by jb567
+\* Last modified Mon Jun 17 18:09:35 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:20 NZST 2019 by jb567

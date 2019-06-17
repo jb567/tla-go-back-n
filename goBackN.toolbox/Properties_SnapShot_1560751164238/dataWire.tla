@@ -68,8 +68,10 @@ Spec == /\ Init /\ [][Next]_vars
 
 \* END TRANSLATION
 Fairness == /\ SF_vars(send)
-
+            /\ SF_vars(/\ send
+                       /\ output' # CORRUPT_DATA
+                       /\ output'[1] = input[1])
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 18:05:16 NZST 2019 by jb567
+\* Last modified Mon Jun 17 17:59:07 NZST 2019 by jb567
 \* Created Sat Jun 01 15:52:42 NZST 2019 by jb567

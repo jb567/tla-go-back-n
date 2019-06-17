@@ -50,7 +50,7 @@ Fairness == /\ sender!Fairness
             /\ SF_vars(/\ dataWire!Next
                        /\ \A x \in 1..Len(dataWireOut): dataWireOut'[x] # CORRUPT_DATA
                        /\ Len(dataWireOut) = WINDOW_SIZE
-                       /\ Head(dataWireOut')[1] = ackSeqNum + 1)
+                       /\ Head(dataWireOut')[1] = ackSeqNum)
   
 Spec == /\ Init
         /\ [][Next]_vars
@@ -65,5 +65,5 @@ Properties == /\ <>[](output = MESSAGE)
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 18:09:35 NZST 2019 by jb567
+\* Last modified Mon Jun 17 18:08:46 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:20 NZST 2019 by jb567

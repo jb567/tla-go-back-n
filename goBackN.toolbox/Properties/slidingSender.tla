@@ -16,12 +16,21 @@ RECURSIVE getPackets2(_,_,_)
 
 \*This converts the input at index into packets
 getPackets(input,idx) == getPackets2(input, idx, WINDOW_SIZE)
-\*
+
+\* A recursive function to generate the packets from `getPackets`
 getPackets2(input, idx, size) == IF idx > Len(input) \/ size = 0
                                  THEN <<>>
                                  ELSE << <<idx, input[idx]>> >> \o getPackets2(input, idx+1, size-1)
 end define
 
+(* =====================
+   3 WAY HANDSHAKE START
+   ===================== *)
+
+(* Passive Open Awaiting connection request
+   - Only should be called once
+   - Upon receiving a valid SYN packet open the 
+*)
 fair process ReceiveSyn = "SynAck"
 begin A:
 while state = "WAITING" do
@@ -52,6 +61,15 @@ while TRUE do
 end while;
 end process;
 
+(* ===================
+   3 WAY HANDSHAKE END
+   =================== *)
+
+(* ====================
+   SLIDING WINDOW START
+   ==================== *)
+
+
 fair process sendWindow = "Sender"
 begin A:
 while TRUE do
@@ -74,6 +92,10 @@ while TRUE do
     inputWire := Tail(inputWire);
 end while;
 end process;
+
+(* ==================
+   SLIDING WINDOW END
+   ================== *)
 
 \*fair process timeOut = "Time Out"
 \*begin A:
@@ -196,5 +218,5 @@ Fairness == /\ WF_vars(ReceiveSyn)
 \*            /\ WF_vars(timeOut_)
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 01:14:17 NZST 2019 by jb567
+\* Last modified Mon Jun 17 13:52:11 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:37 NZST 2019 by jb567

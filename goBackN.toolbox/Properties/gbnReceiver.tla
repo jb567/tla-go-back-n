@@ -23,10 +23,10 @@ define
     \*    SeqMap(Op(_), seq) == [x \in DOMAIN seq |-> Op(seq[x])]
     SeqMap(op(_), seq) == IF Len(seq) = 0 THEN <<>>
                           ELSE <<op(Head(seq))>> \o SeqMap(op, Tail(seq))
-    
+
     \* A function to take the second item from a sequence (used with seq map to extract packet data)
     Second(item) == item[2]
-    
+
     \* Will return the longest subsequence of correct/acceptable packets
     RECURSIVE TakeWhile(_,_)
     TakeWhile(items,acceptedIdx) == IF Len(items) = 0 THEN 0
@@ -69,24 +69,34 @@ end process;
 \* TCP HANDSHAKE END
 \* =================
 
+\* ====================
+\* SLIDING WINDOW START
+\* ====================
+
 \* Receives messages from the input
-\* Put 
+\* Gets all the messages from the start that are valid 
+\* until one is not, then gets the message and appends
+\* this to the output
 fair process receiver = "GBN Receiver"
 begin A:
 while TRUE do
     await /\ inputWire # <<>>
           /\ state = "OPEN";
     output := output \o 
+        \* Map the valid packet list -> output
         SeqMap(
             Second,
+            \* Generate the subsequence of valid items
             SubSeq(DropCorrupt(inputWire), 1, 
                 TakeWhile(DropCorrupt(inputWire), ackSeqNum))
         );
     ackSeqNum := ackSeqNum + TakeWhile(DropCorrupt(inputWire), ackSeqNum);
+    \* Clear the input
     inputWire := <<>>;
 end while;
 end process;
 
+\* Sends acknowledgements one at a time
 fair process sender = "GBN Receiver ACK"
 begin A:
 while TRUE do
@@ -100,9 +110,9 @@ end process;
 end algorithm;
 *)
 \* BEGIN TRANSLATION
-\* Label A of process SYN at line 38 col 1 changed to A_
-\* Label A of process FirstAck at line 47 col 1 changed to A_F
-\* Label A of process receiver at line 59 col 1 changed to A_r
+\* Label A of process SYN at line 45 col 1 changed to A_
+\* Label A of process FirstAck at line 58 col 1 changed to A_F
+\* Label A of process receiver at line 78 col 1 changed to A_r
 VARIABLES output, outputWire, ackSeqNum, state, inputWire
 
 (* define statement *)
@@ -119,6 +129,7 @@ SeqMap(op(_), seq) == IF Len(seq) = 0 THEN <<>>
 
 
 Second(item) == item[2]
+
 
 RECURSIVE TakeWhile(_,_)
 TakeWhile(items,acceptedIdx) == IF Len(items) = 0 THEN 0
@@ -154,8 +165,10 @@ FirstAck == /\ /\ state = "WAITING"
 receiver == /\ /\ inputWire # <<>>
                /\ state = "OPEN"
             /\ output' =       output \o
+                         
                          SeqMap(
                              Second,
+                         
                              SubSeq(DropCorrupt(inputWire), 1,
                                  TakeWhile(DropCorrupt(inputWire), ackSeqNum))
                          )
@@ -185,5 +198,5 @@ Fairness == /\ WF_vars(receiver)
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 02:00:48 NZST 2019 by jb567
+\* Last modified Mon Jun 17 10:24:33 NZST 2019 by jb567
 \* Created Mon Jun 03 09:20:20 NZST 2019 by jb567
