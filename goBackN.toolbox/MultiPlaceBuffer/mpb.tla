@@ -12,7 +12,7 @@ vars == <<index, output, buffer, n>>
 
 SendN == /\ buffer = <<>>
          /\ n = 0
-         /\ n' \in index..Min(index+WINDOW_SIZE,Len(MESSAGE))
+         /\ n' \in index+1..Min(index+WINDOW_SIZE,Len(MESSAGE))
          /\ buffer' = SubSeq(MESSAGE,index,n'-index)
 
 ReceiveN == /\ buffer # <<>>
@@ -37,11 +37,8 @@ Next == \/ SendN /\ UNCHANGED <<output, index>>
         
 Spec == /\ Init
         /\ [][Next]_vars
-        /\ SF_vars(SendN)
-        /\ SF_vars(ReceiveN)
-        /\ SF_vars(MovePlace)
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 21:58:39 NZST 2019 by jb567
+\* Last modified Mon Jun 17 22:08:46 NZST 2019 by jb567
 \* Created Mon Jun 03 12:09:13 NZST 2019 by jb567
