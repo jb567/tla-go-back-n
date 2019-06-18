@@ -2,7 +2,7 @@
 <launchConfiguration type="org.lamport.tla.toolbox.tool.tlc.modelCheck">
     <stringAttribute key="TLCCmdLineParameters" value=""/>
     <booleanAttribute key="collectCoverage" value="true"/>
-    <stringAttribute key="configurationName" value="Properties"/>
+    <stringAttribute key="configurationName" value="MultiPlaceBuffer_SnapShot_1560852577531"/>
     <booleanAttribute key="deferLiveness" value="false"/>
     <intAttribute key="dfidDepth" value="100"/>
     <booleanAttribute key="dfidMode" value="false"/>
@@ -17,24 +17,19 @@
     <intAttribute key="maxHeapSize" value="25"/>
     <intAttribute key="maxSetSize" value="1000000"/>
     <booleanAttribute key="mcMode" value="true"/>
-    <stringAttribute key="modelBehaviorInit" value=""/>
-    <stringAttribute key="modelBehaviorNext" value=""/>
+    <stringAttribute key="modelBehaviorInit" value="Init"/>
+    <stringAttribute key="modelBehaviorNext" value="multiplace!Next /\ UNCHANGED &lt;&lt;dataWireIn, dataWireOut, ackWireIn, &#10;&#9;&#9;&#9;ackWireOut, senderPc, ackSeqNum, receiverState, senderState&gt;&gt;"/>
     <stringAttribute key="modelBehaviorSpec" value="Spec"/>
-    <intAttribute key="modelBehaviorSpecType" value="1"/>
+    <intAttribute key="modelBehaviorSpecType" value="2"/>
     <stringAttribute key="modelBehaviorVars" value="senderState, ackWireIn, ackWireOut, dataWireOut, n, dataWireIn, output, ackSeqNum, senderIdx, buffer, senderPc, receiverState"/>
     <stringAttribute key="modelComments" value=""/>
     <booleanAttribute key="modelCorrectnessCheckDeadlock" value="false"/>
     <listAttribute key="modelCorrectnessInvariants"/>
-    <listAttribute key="modelCorrectnessProperties">
-        <listEntry value="1Properties"/>
-        <listEntry value="0[](output # MESSAGE)"/>
-        <listEntry value="1Tcp!Spec"/>
-        <listEntry value="1multiplace!Spec"/>
-    </listAttribute>
+    <listAttribute key="modelCorrectnessProperties"/>
     <stringAttribute key="modelExpressionEval" value=""/>
     <stringAttribute key="modelParameterActionConstraint" value=""/>
     <listAttribute key="modelParameterConstants">
-        <listEntry value="MESSAGE;;&lt;&lt; 1, 2, 3, 4, 5, 6, 7, 8, 9&gt;&gt;;0;0"/>
+        <listEntry value="MESSAGE;;&lt;&lt;1,2,3,4,5,6,7,8,9&gt;&gt;;0;0"/>
         <listEntry value="WINDOW_SIZE;;3;0;0"/>
         <listEntry value="CORRUPT_DATA;;CORRUPT_DATA;1;0"/>
     </listAttribute>
@@ -51,5 +46,5 @@
     <stringAttribute key="specName" value="goBackN"/>
     <stringAttribute key="tlcResourcesProfile" value="local custom"/>
     <stringAttribute key="view" value=""/>
-    <booleanAttribute key="visualizeStateGraph" value="false"/>
+    <booleanAttribute key="visualizeStateGraph" value="true"/>
 </launchConfiguration>

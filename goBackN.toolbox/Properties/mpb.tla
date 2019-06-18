@@ -1,6 +1,9 @@
 -------------------------------- MODULE mpb --------------------------------
 EXTENDS Sequences, Naturals
 
+Min(x,y) == IF x < y THEN x ELSE y
+
+
 CONSTANT MESSAGE, WINDOW_SIZE
 
 VARIABLES index, output, buffer, n
@@ -9,18 +12,18 @@ vars == <<index, output, buffer, n>>
 
 SendN == /\ buffer = <<>>
          /\ n = 0
-         /\ LET q == CHOOSE q \in 1..WINDOW_SIZE : index + q <= Len(MESSAGE)
-            IN /\ buffer' = SubSeq(MESSAGE,index,q)
-               /\ n' = q
+         /\ n' \in index+1..Min(index+WINDOW_SIZE,Len(MESSAGE))
+         /\ buffer' = SubSeq(MESSAGE,index,n'-index)
+
 
 ReceiveN == /\ buffer # <<>>
             /\ output' = output \o buffer
-            /\ buffer = <<>>
+            /\ buffer' = <<>>
 
 MovePlace == /\ buffer = <<>>
              /\ n # 0
-             /\ index' = index + n
-             /\ n = 0
+             /\ index' = n
+             /\ n' = 0
 
 
 
@@ -31,12 +34,12 @@ Init == /\ index = 1
 
 Next == \/ SendN /\ UNCHANGED <<output, index>>
         \/ ReceiveN /\ UNCHANGED <<n, index>>
-        \/ MovePlace /\ UNCHANGED <<output>>
+        \/ MovePlace /\ UNCHANGED <<output, buffer>>
         
 Spec == /\ Init
         /\ [][Next]_vars
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 00:17:06 NZST 2019 by jb567
+\* Last modified Tue Jun 18 22:09:31 NZST 2019 by jb567
 \* Created Mon Jun 03 12:09:13 NZST 2019 by jb567

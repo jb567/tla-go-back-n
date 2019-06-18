@@ -34,12 +34,12 @@ Init == /\ index = 1
 
 Next == \/ SendN /\ UNCHANGED <<output, index>>
         \/ ReceiveN /\ UNCHANGED <<n, index>>
-        \/ MovePlace /\ UNCHANGED <<output, buffer>>
+        \/ MovePlace /\ UNCHANGED <<output>>
         
 Spec == /\ Init
         /\ [][Next]_vars
 
 =============================================================================
 \* Modification History
-\* Last modified Tue Jun 18 22:09:31 NZST 2019 by jb567
+\* Last modified Tue Jun 18 22:08:57 NZST 2019 by jb567
 \* Created Mon Jun 03 12:09:13 NZST 2019 by jb567

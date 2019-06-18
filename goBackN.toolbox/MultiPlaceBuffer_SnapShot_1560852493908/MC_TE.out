@@ -2,7 +2,7 @@
 TLC2 Version 2.13 of 18 July 2018
 @!@!@ENDMSG 2262 @!@!@
 @!@!@STARTMSG 2187:0 @!@!@
-Running breadth-first search Model-Checking with fp 93 and seed 6090974245018828662 with 4 workers on 8 cores with 583MB heap and 1309MB offheap memory [pid: 11739] (Linux 5.1.7-arch1-1-ARCH amd64, AdoptOpenJDK 11.0.3 x86_64, OffHeapDiskFPSet, DiskStateQueue).
+Running breadth-first search Model-Checking with fp 96 and seed -286801153336830164 with 4 workers on 8 cores with 583MB heap and 1309MB offheap memory [pid: 11349] (Linux 5.1.7-arch1-1-ARCH amd64, AdoptOpenJDK 11.0.3 x86_64, OffHeapDiskFPSet, DiskStateQueue).
 @!@!@ENDMSG 2187 @!@!@
 @!@!@STARTMSG 2220:0 @!@!@
 Starting SANY...
@@ -33,22 +33,22 @@ Semantic processing of module MC
 SANY finished.
 @!@!@ENDMSG 2219 @!@!@
 @!@!@STARTMSG 2185:0 @!@!@
-Starting... (2019-06-18 22:09:36)
+Starting... (2019-06-18 22:08:12)
 @!@!@ENDMSG 2185 @!@!@
 @!@!@STARTMSG 2189:0 @!@!@
 Computing initial states...
 @!@!@ENDMSG 2189 @!@!@
 @!@!@STARTMSG 2190:0 @!@!@
-Finished computing initial states: 1 distinct state generated at 2019-06-18 22:09:36.
+Finished computing initial states: 1 distinct state generated at 2019-06-18 22:08:13.
 @!@!@ENDMSG 2190 @!@!@
 @!@!@STARTMSG 2193:0 @!@!@
 Model checking completed. No error has been found.
   Estimates of the probability that TLC did not check all reachable states
   because two distinct states had the same fingerprint:
-  calculated (optimistic):  val = 1.4E-16
+  calculated (optimistic):  val = 0.0
 @!@!@ENDMSG 2193 @!@!@
 @!@!@STARTMSG 2201:0 @!@!@
-The coverage statistics at 2019-06-18 22:09:36
+The coverage statistics at 2019-06-18 22:08:13
 @!@!@ENDMSG 2201 @!@!@
 @!@!@STARTMSG 2773:0 @!@!@
 <Init line 33, col 1 to line 33, col 4 of module ass3>: 1
@@ -57,137 +57,104 @@ The coverage statistics at 2019-06-18 22:09:36
   line 33, col 9 to line 37, col 26 of module ass3: 1
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2772:0 @!@!@
-<next_156085257549222000 line 15, col 1 to line 15, col 23 of module MC>: 86:115
+<next_156085249188116000 line 15, col 1 to line 15, col 23 of module MC>: 6:6
 @!@!@ENDMSG 2772 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 30, col 1 to line 30, col 50 of module ass3: 7
+  line 30, col 1 to line 30, col 50 of module ass3: 3
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 30, col 1 to line 30, col 50 of module ass3: 268
+  line 30, col 1 to line 30, col 50 of module ass3: 17
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 30, col 1 to line 30, col 50 of module ass3: 80
+  line 30, col 1 to line 30, col 50 of module ass3: 4
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 30, col 1 to line 30, col 50 of module ass3: 268
+  line 30, col 1 to line 30, col 50 of module ass3: 24
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 30, col 1 to line 30, col 50 of module ass3: 26
+  line 30, col 1 to line 30, col 50 of module ass3: 1
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 30, col 42 to line 30, col 50 of module ass3: 160
+  line 30, col 42 to line 30, col 50 of module ass3: 8
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 13, col 13 to line 13, col 25 of module mpb: 109
+  line 13, col 13 to line 13, col 25 of module mpb: 8
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 13, col 13 to line 13, col 18 of module mpb: 87
+  |line 13, col 13 to line 13, col 18 of module mpb: 7
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 13, col 22 to line 13, col 25 of module mpb: 87
+  |line 13, col 22 to line 13, col 25 of module mpb: 7
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 14, col 13 to line 14, col 17 of module mpb: 102
+  line 14, col 13 to line 14, col 17 of module mpb: 5
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 14, col 13 to line 14, col 13 of module mpb: 80
+  |line 14, col 13 to line 14, col 13 of module mpb: 4
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 15, col 13 to line 15, col 63 of module mpb: 54
+  line 15, col 13 to line 15, col 63 of module mpb: 3
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 15, col 20 to line 15, col 63 of module mpb: 26
+  |line 15, col 20 to line 15, col 63 of module mpb: 1
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  ||line 15, col 20 to line 15, col 26 of module mpb: 26
+  line 16, col 13 to line 16, col 52 of module mpb: 3
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  ||line 15, col 29 to line 15, col 63 of module mpb: 26
+  line 36, col 21 to line 36, col 47 of module mpb: 3
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |||line 4, col 13 to line 4, col 34 of module mpb: 26
+  line 20, col 16 to line 20, col 28 of module mpb: 10
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  ||||line 4, col 16 to line 4, col 20 of module mpb: 26
+  |line 20, col 16 to line 20, col 21 of module mpb: 7
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  ||||line 4, col 27 to line 4, col 27 of module mpb: 10
+  |line 20, col 25 to line 20, col 28 of module mpb: 7
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  ||||line 4, col 34 to line 4, col 34 of module mpb: 16
+  line 21, col 16 to line 21, col 41 of module mpb: 3
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |||line 15, col 33 to line 15, col 49 of module mpb: 26
+  line 22, col 16 to line 22, col 29 of module mpb: 3
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |||line 15, col 51 to line 15, col 62 of module mpb: 26
+  line 37, col 24 to line 37, col 45 of module mpb: 3
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 16, col 13 to line 16, col 52 of module mpb: 54
+  line 24, col 17 to line 24, col 29 of module mpb: 7
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 35, col 21 to line 35, col 47 of module mpb: 54
+  line 25, col 17 to line 25, col 21 of module mpb: 4
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 19, col 16 to line 19, col 28 of module mpb: 94
+  line 26, col 17 to line 26, col 26 of module mpb: 3
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 19, col 16 to line 19, col 21 of module mpb: 87
+  line 27, col 17 to line 27, col 21 of module mpb: 3
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 19, col 25 to line 19, col 28 of module mpb: 87
+  line 38, col 25 to line 38, col 44 of module mpb: 0
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 20, col 16 to line 20, col 41 of module mpb: 7
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 21, col 16 to line 21, col 29 of module mpb: 7
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 36, col 24 to line 36, col 45 of module mpb: 7
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 23, col 17 to line 23, col 29 of module mpb: 141
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  |line 23, col 17 to line 23, col 22 of module mpb: 87
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  |line 23, col 26 to line 23, col 29 of module mpb: 87
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 24, col 17 to line 24, col 21 of module mpb: 134
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  |line 24, col 17 to line 24, col 17 of module mpb: 80
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 25, col 17 to line 25, col 26 of module mpb: 54
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 26, col 17 to line 26, col 22 of module mpb: 54
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 37, col 25 to line 37, col 52 of module mpb: 54
-@!@!@ENDMSG 2221 @!@!@
-@!@!@STARTMSG 2221:0 @!@!@
-  line 16, col 20 to line 17, col 85 of module MC: 115
+  line 16, col 20 to line 17, col 85 of module MC: 6
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2202:0 @!@!@
 End of statistics.
 @!@!@ENDMSG 2202 @!@!@
 @!@!@STARTMSG 2200:0 @!@!@
-Progress(12) at 2019-06-18 22:09:36: 116 states generated (6,052 s/min), 87 distinct states found (4,539 ds/min), 0 states left on queue.
+Progress(3) at 2019-06-18 22:08:13: 7 states generated (330 s/min), 7 distinct states found (330 ds/min), 0 states left on queue.
 @!@!@ENDMSG 2200 @!@!@
 @!@!@STARTMSG 2199:0 @!@!@
-116 states generated, 87 distinct states found, 0 states left on queue.
+7 states generated, 7 distinct states found, 0 states left on queue.
 @!@!@ENDMSG 2199 @!@!@
 @!@!@STARTMSG 2194:0 @!@!@
-The depth of the complete state graph search is 12.
+The depth of the complete state graph search is 3.
 @!@!@ENDMSG 2194 @!@!@
 @!@!@STARTMSG 2268:0 @!@!@
 The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 3 and the 95th percentile is 3).
 @!@!@ENDMSG 2268 @!@!@
 @!@!@STARTMSG 2186:0 @!@!@
-Finished in 1155ms at (2019-06-18 22:09:36)
+Finished in 1276ms at (2019-06-18 22:08:13)
 @!@!@ENDMSG 2186 @!@!@

@@ -1,0 +1,22 @@
+strict digraph DiskGraph {
+edge [colorscheme="paired12"]
+nodesep=0.35;
+subgraph cluster_graph {
+color="white";
+-1490442999080990624 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 0\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\"",style = filled]
+-1490442999080990624 -> -6793793057366922212 [label="",color="2",fontcolor="2"];
+-6793793057366922212 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 2\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<1>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\""];
+-1490442999080990624 -> -3661360368359206449 [label="",color="2",fontcolor="2"];
+-3661360368359206449 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 3\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<1, 2>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\""];
+-6793793057366922212 -> -256904569457372047 [label="",color="2",fontcolor="2"];
+-256904569457372047 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 2\n/\\ dataWireIn = <<>>\n/\\ output = <<1>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\""];
+-1490442999080990624 -> -3426376744622443005 [label="",color="2",fontcolor="2"];
+-3426376744622443005 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 4\n/\\ dataWireIn = <<>>\n/\\ output = <<>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<1, 2, 3>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\""];
+-3661360368359206449 -> -9044423818861908925 [label="",color="2",fontcolor="2"];
+-9044423818861908925 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 3\n/\\ dataWireIn = <<>>\n/\\ output = <<1, 2>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\""];
+-3426376744622443005 -> -2341790064711285661 [label="",color="2",fontcolor="2"];
+-2341790064711285661 [label="/\\ senderState = \"WAITING\"\n/\\ ackWireIn = <<>>\n/\\ ackWireOut = <<>>\n/\\ dataWireOut = <<>>\n/\\ n = 4\n/\\ dataWireIn = <<>>\n/\\ output = <<1, 2, 3>>\n/\\ ackSeqNum = 0\n/\\ senderIdx = 1\n/\\ buffer = <<>>\n/\\ senderPc = [ SendSynAck |-> \"A_S\",\n  ACK |-> \"A\",\n  SynAck |-> \"A_\",\n  ReceiveButFirst |-> \"A_R\",\n  Sender |-> \"A_s\" ]\n/\\ receiverState = \"WAITING\""];
+{rank = same; -1490442999080990624;}
+{rank = same; -3661360368359206449;-6793793057366922212;-3426376744622443005;}
+}
+}
