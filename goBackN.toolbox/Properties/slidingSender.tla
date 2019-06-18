@@ -1,6 +1,6 @@
 --------------------------- MODULE slidingSender ---------------------------
-EXTENDS Naturals, Sequences, TLC, Util
-CONSTANTS MESSAGE, CORRUPT_DATA
+EXTENDS Naturals, Sequences, TLC
+CONSTANTS MESSAGE, WINDOW_SIZE, CORRUPT_DATA
 ASSUME WINDOW_SIZE \in 0..99
 
 
@@ -9,8 +9,19 @@ variables
     slidingIdx = 1,
     outputWire = <<>>,
     inputWire = <<>>,
-    startNum \in 1..5,
     state = "WAITING";
+define
+
+RECURSIVE getPackets2(_,_,_)
+
+\*This converts the input at index into packets
+getPackets(input,idx) == getPackets2(input, idx, WINDOW_SIZE)
+
+\* A recursive function to generate the packets from `getPackets`
+getPackets2(input, idx, size) == IF idx > Len(input) \/ size = 0
+                                 THEN <<>>
+                                 ELSE << <<idx, input[idx]>> >> \o getPackets2(input, idx+1, size-1)
+end define
 
 (* =====================
    3 WAY HANDSHAKE START
@@ -18,15 +29,14 @@ variables
 
 (* Passive Open Awaiting connection request
    - Only should be called once
-   - Upon receiving a valid SYN packet open the connection, which allows for data to be sent
+   - Upon receiving a valid SYN packet open the 
 *)
 fair process ReceiveSyn = "SynAck"
 begin A:
 while state = "WAITING" do
     await inputWire # <<>>;
-    if inputWire[1] # CORRUPT_DATA /\ Head(inputWire)[1] = "SYN" then
-        state := "OPENING";
-        \*otherStart := Head(inputWire)[2];
+    if inputWire[1] # CORRUPT_DATA then
+        state := "OPENING"
     end if;
     inputWire := Tail(inputWire);
 end while;
@@ -67,7 +77,7 @@ while TRUE do
     await /\ outputWire = <<>>
           /\ slidingIdx <= Len(MESSAGE)
           /\ state = "OPEN";
-    outputWire := getPackets(MESSAGE, 0, slidingIdx);
+    outputWire := getPackets(MESSAGE, slidingIdx);
 end while;
 end process;
 
@@ -76,8 +86,8 @@ begin A:
 while TRUE do
     await /\ inputWire # <<>>
           /\ state = "OPEN";
-    if Head(inputWire) # CORRUPT_DATA /\ InWindow(slidingIdx, 0, Head(inputWire)[2]) then
-        slidingIdx := slidingIdx + WindowPos(ConvertIdx(0,slidingIdx), Head(inputWire)[2]);
+    if Head(inputWire) # CORRUPT_DATA /\ Head(inputWire)[2] >= slidingIdx then
+        slidingIdx := Head(inputWire)[2] + 1;
     end if;
     inputWire := Tail(inputWire);
 end while;
@@ -87,16 +97,35 @@ end process;
    SLIDING WINDOW END
    ================== *)
 
+\*fair process timeOut = "Time Out"
+\*begin A:
+\*await /\ outputWire = <<>>
+\*      /\ slidingIdx >= Len(MESSAGE) + 1
+\*      /\ ~timeOut;
+\*timeOut := TRUE;
+\*end process;
+
 end algorithm;
 *)
 \* BEGIN TRANSLATION
-\* Label A of process ReceiveSyn at line 25 col 1 changed to A_
-\* Label A of process SendSynAck at line 37 col 1 changed to A_S
-\* Label A of process ReceiveFirstAck at line 45 col 1 changed to A_R
-\* Label A of process sendWindow at line 65 col 1 changed to A_s
-VARIABLES slidingIdx, outputWire, inputWire, startNum, state, pc
+\* Label A of process ReceiveSyn at line 27 col 1 changed to A_
+\* Label A of process SendSynAck at line 38 col 1 changed to A_S
+\* Label A of process ReceiveFirstAck at line 46 col 1 changed to A_R
+\* Label A of process sendWindow at line 57 col 1 changed to A_s
+VARIABLES slidingIdx, outputWire, inputWire, state, pc
 
-vars == << slidingIdx, outputWire, inputWire, startNum, state, pc >>
+(* define statement *)
+RECURSIVE getPackets2(_,_,_)
+
+
+getPackets(input,idx) == getPackets2(input, idx, WINDOW_SIZE)
+
+getPackets2(input, idx, size) == IF idx > Len(input) \/ size = 0
+                                 THEN <<>>
+                                 ELSE << <<idx, input[idx]>> >> \o getPackets2(input, idx+1, size-1)
+
+
+vars == << slidingIdx, outputWire, inputWire, state, pc >>
 
 ProcSet == {"SynAck"} \cup {"SendSynAck"} \cup {"ReceiveButFirst"} \cup {"Sender"} \cup {"ACK"}
 
@@ -104,7 +133,6 @@ Init == (* Global variables *)
         /\ slidingIdx = 1
         /\ outputWire = <<>>
         /\ inputWire = <<>>
-        /\ startNum \in 1..5
         /\ state = "WAITING"
         /\ pc = [self \in ProcSet |-> CASE self = "SynAck" -> "A_"
                                         [] self = "SendSynAck" -> "A_S"
@@ -115,7 +143,7 @@ Init == (* Global variables *)
 A_ == /\ pc["SynAck"] = "A_"
       /\ IF state = "WAITING"
             THEN /\ inputWire # <<>>
-                 /\ IF inputWire[1] # CORRUPT_DATA /\ Head(inputWire)[1] = "SYN"
+                 /\ IF inputWire[1] # CORRUPT_DATA
                        THEN /\ state' = "OPENING"
                        ELSE /\ TRUE
                             /\ state' = state
@@ -123,7 +151,7 @@ A_ == /\ pc["SynAck"] = "A_"
                  /\ pc' = [pc EXCEPT !["SynAck"] = "A_"]
             ELSE /\ pc' = [pc EXCEPT !["SynAck"] = "Done"]
                  /\ UNCHANGED << inputWire, state >>
-      /\ UNCHANGED << slidingIdx, outputWire, startNum >>
+      /\ UNCHANGED << slidingIdx, outputWire >>
 
 ReceiveSyn == A_
 
@@ -131,7 +159,7 @@ A_S == /\ pc["SendSynAck"] = "A_S"
        /\ state = "OPENING" /\ outputWire = <<>>
        /\ outputWire' = <<<<0, "SYNACK">>>>
        /\ pc' = [pc EXCEPT !["SendSynAck"] = "A_S"]
-       /\ UNCHANGED << slidingIdx, inputWire, startNum, state >>
+       /\ UNCHANGED << slidingIdx, inputWire, state >>
 
 SendSynAck == A_S
 
@@ -143,7 +171,7 @@ A_R == /\ pc["ReceiveButFirst"] = "A_R"
                   /\ state' = state
        /\ inputWire' = Tail(inputWire)
        /\ pc' = [pc EXCEPT !["ReceiveButFirst"] = "A_R"]
-       /\ UNCHANGED << slidingIdx, outputWire, startNum >>
+       /\ UNCHANGED << slidingIdx, outputWire >>
 
 ReceiveFirstAck == A_R
 
@@ -151,22 +179,22 @@ A_s == /\ pc["Sender"] = "A_s"
        /\ /\ outputWire = <<>>
           /\ slidingIdx <= Len(MESSAGE)
           /\ state = "OPEN"
-       /\ outputWire' = getPackets(MESSAGE, 0, slidingIdx)
+       /\ outputWire' = getPackets(MESSAGE, slidingIdx)
        /\ pc' = [pc EXCEPT !["Sender"] = "A_s"]
-       /\ UNCHANGED << slidingIdx, inputWire, startNum, state >>
+       /\ UNCHANGED << slidingIdx, inputWire, state >>
 
 sendWindow == A_s
 
 A == /\ pc["ACK"] = "A"
      /\ /\ inputWire # <<>>
         /\ state = "OPEN"
-     /\ IF Head(inputWire) # CORRUPT_DATA /\ InWindow(slidingIdx, 0, Head(inputWire)[2])
-           THEN /\ slidingIdx' = slidingIdx + WindowPos(ConvertIdx(0,slidingIdx), Head(inputWire)[2])
+     /\ IF Head(inputWire) # CORRUPT_DATA /\ Head(inputWire)[2] >= slidingIdx
+           THEN /\ slidingIdx' = Head(inputWire)[2] + 1
            ELSE /\ TRUE
                 /\ UNCHANGED slidingIdx
      /\ inputWire' = Tail(inputWire)
      /\ pc' = [pc EXCEPT !["ACK"] = "A"]
-     /\ UNCHANGED << outputWire, startNum, state >>
+     /\ UNCHANGED << outputWire, state >>
 
 receiveLatest == A
 
@@ -190,5 +218,5 @@ Fairness == /\ WF_vars(ReceiveSyn)
 \*            /\ WF_vars(timeOut_)
 =============================================================================
 \* Modification History
-\* Last modified Tue Jun 18 21:57:18 NZST 2019 by jb567
+\* Last modified Mon Jun 17 13:52:11 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:37 NZST 2019 by jb567

@@ -24,6 +24,8 @@ MovePlace == /\ buffer = <<>>
              /\ index' = n
              /\ n = 0
 
+
+
 Init == /\ index = 1
         /\ output = <<>>
         /\ buffer = <<>>
@@ -38,5 +40,5 @@ Spec == /\ Init
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 22:12:42 NZST 2019 by jb567
+\* Last modified Mon Jun 17 22:08:46 NZST 2019 by jb567
 \* Created Mon Jun 03 12:09:13 NZST 2019 by jb567

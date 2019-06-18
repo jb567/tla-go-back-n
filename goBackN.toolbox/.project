@@ -16,11 +16,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Util.tla</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Util.tla</locationURI>
-		</link>
-		<link>
 			<name>ass3.tla</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/ass3.tla</locationURI>
