@@ -37,10 +37,10 @@ Init == /\ sender!Init
         /\ ackWire!Init
         /\ multiplace!Init
 
-Next == /\ \/ sender!Next /\ UNCHANGED <<dataWireOut, ackWireIn, output, ackSeqNum, receiverState, receiverStartNum, receiverStartNum>>
+Next == /\ \/ sender!Next /\ UNCHANGED <<dataWireOut, ackWireIn, output, ackSeqNum, receiverState, receiverStartNum>>
            \/ dataWire!Next /\ UNCHANGED <<ackWireIn, ackWireOut, output, ackSeqNum, senderIdx, senderState, senderPc, receiverState, senderStartNum, receiverStartNum>>
            \/ ackWire!Next /\ UNCHANGED <<dataWireIn, dataWireOut, output, ackSeqNum, senderIdx, senderState, senderPc, receiverState, senderStartNum, receiverStartNum>>
-           \/ receiver!Next /\ UNCHANGED <<dataWireIn, ackWireOut, senderIdx, senderState, senderPc, senderStartNum, receiverStartNum>>
+           \/ receiver!Next /\ UNCHANGED <<dataWireIn, ackWireOut, senderIdx, senderState, senderPc, senderStartNum>>
         /\ UNCHANGED <<buffer, n>>
 
 
@@ -66,5 +66,5 @@ Properties == /\ <>[](output = MESSAGE)
 
 =============================================================================
 \* Modification History
-\* Last modified Tue Jun 18 22:00:00 NZST 2019 by jb567
+\* Last modified Tue Jun 18 21:59:08 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:20 NZST 2019 by jb567

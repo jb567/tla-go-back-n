@@ -130,5 +130,5 @@ Spec == /\ Init /\ [][Next]_vars
 Fairness == /\ SF_vars(sendNormally)
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 00:59:40 NZST 2019 by jb567
+\* Last modified Mon Jun 17 22:18:05 NZST 2019 by jb567
 \* Created Sat Jun 01 15:52:42 NZST 2019 by jb567

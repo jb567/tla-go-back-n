@@ -1,5 +1,5 @@
 ---------------------------- MODULE gbnReceiver ----------------------------
-EXTENDS Sequences, Naturals, TLC
+EXTENDS Sequences, Naturals, TLC, Util
 
 CONSTANT CORRUPT_DATA
 
@@ -7,7 +7,8 @@ CONSTANT CORRUPT_DATA
 variables
     output = <<>>,
     outputWire = <<>>,
-    ackSeqNum = 0,
+    startNum \in 1..5,
+    ackSeqNum = startNum,
     state = "WAITING",
     inputWire = <<>>;
 
@@ -30,7 +31,8 @@ define
     \* Will return the longest subsequence of correct/acceptable packets
     RECURSIVE TakeWhile(_,_)
     TakeWhile(items,acceptedIdx) == IF Len(items) = 0 THEN 0
-                                ELSE IF Head(items)[1] = acceptedIdx + 1 THEN 1 + TakeWhile(Tail(items), acceptedIdx + 1)
+                                ELSE IF Head(items)[1] = GetNextPacketNumber(0,acceptedIdx) 
+                                     THEN 1 + TakeWhile(Tail(items), GetNextPacketNumber(0,acceptedIdx))
                                 ELSE 0
 end define;
 
@@ -45,7 +47,7 @@ begin A:
 while TRUE do
     await /\ state = "WAITING"
           /\ outputWire = <<>>;
-    outputWire := <<<<"SYN", ackSeqNum>>>>
+    outputWire := <<<<"SYN", startNum>>>>
 end while;
 end process;
 
@@ -102,7 +104,7 @@ begin A:
 while TRUE do
     await /\ outputWire = <<>>
           /\ state = "OPEN";
-    outputWire := << <<"ACK", ackSeqNum>> >>;
+    outputWire := << <<"ACK", ConvertIdx(0,ackSeqNum)>> >>;
 end while;
 end process;
 
@@ -110,10 +112,10 @@ end process;
 end algorithm;
 *)
 \* BEGIN TRANSLATION
-\* Label A of process SYN at line 45 col 1 changed to A_
-\* Label A of process FirstAck at line 58 col 1 changed to A_F
-\* Label A of process receiver at line 78 col 1 changed to A_r
-VARIABLES output, outputWire, ackSeqNum, state, inputWire
+\* Label A of process SYN at line 47 col 1 changed to A_
+\* Label A of process FirstAck at line 60 col 1 changed to A_F
+\* Label A of process receiver at line 84 col 1 changed to A_r
+VARIABLES output, outputWire, startNum, ackSeqNum, state, inputWire
 
 (* define statement *)
 RECURSIVE DropCorrupt(_)
@@ -133,25 +135,27 @@ Second(item) == item[2]
 
 RECURSIVE TakeWhile(_,_)
 TakeWhile(items,acceptedIdx) == IF Len(items) = 0 THEN 0
-                            ELSE IF Head(items)[1] = acceptedIdx + 1 THEN 1 + TakeWhile(Tail(items), acceptedIdx + 1)
+                            ELSE IF Head(items)[1] = GetNextPacketNumber(0,acceptedIdx)
+                                 THEN 1 + TakeWhile(Tail(items), GetNextPacketNumber(0,acceptedIdx))
                             ELSE 0
 
 
-vars == << output, outputWire, ackSeqNum, state, inputWire >>
+vars == << output, outputWire, startNum, ackSeqNum, state, inputWire >>
 
 ProcSet == {"SYN"} \cup {"ACK"} \cup {"GBN Receiver"} \cup {"GBN Receiver ACK"}
 
 Init == (* Global variables *)
         /\ output = <<>>
         /\ outputWire = <<>>
-        /\ ackSeqNum = 0
+        /\ startNum \in 1..5
+        /\ ackSeqNum = startNum
         /\ state = "WAITING"
         /\ inputWire = <<>>
 
 SYN == /\ /\ state = "WAITING"
           /\ outputWire = <<>>
-       /\ outputWire' = <<<<"SYN", ackSeqNum>>>>
-       /\ UNCHANGED << output, ackSeqNum, state, inputWire >>
+       /\ outputWire' = <<<<"SYN", startNum>>>>
+       /\ UNCHANGED << output, startNum, ackSeqNum, state, inputWire >>
 
 FirstAck == /\ /\ state = "WAITING"
                /\ inputWire # <<>>
@@ -160,7 +164,7 @@ FirstAck == /\ /\ state = "WAITING"
                   ELSE /\ TRUE
                        /\ state' = state
             /\ inputWire' = <<>>
-            /\ UNCHANGED << output, outputWire, ackSeqNum >>
+            /\ UNCHANGED << output, outputWire, startNum, ackSeqNum >>
 
 receiver == /\ /\ inputWire # <<>>
                /\ state = "OPEN"
@@ -174,12 +178,12 @@ receiver == /\ /\ inputWire # <<>>
                          )
             /\ ackSeqNum' = ackSeqNum + TakeWhile(DropCorrupt(inputWire), ackSeqNum)
             /\ inputWire' = <<>>
-            /\ UNCHANGED << outputWire, state >>
+            /\ UNCHANGED << outputWire, startNum, state >>
 
 sender == /\ /\ outputWire = <<>>
              /\ state = "OPEN"
-          /\ outputWire' = << <<"ACK", ackSeqNum>> >>
-          /\ UNCHANGED << output, ackSeqNum, state, inputWire >>
+          /\ outputWire' = << <<"ACK", ConvertIdx(0,ackSeqNum)>> >>
+          /\ UNCHANGED << output, startNum, ackSeqNum, state, inputWire >>
 
 Next == SYN \/ FirstAck \/ receiver \/ sender
 
@@ -198,5 +202,5 @@ Fairness == /\ WF_vars(receiver)
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 10:24:33 NZST 2019 by jb567
+\* Last modified Tue Jun 18 21:57:48 NZST 2019 by jb567
 \* Created Mon Jun 03 09:20:20 NZST 2019 by jb567

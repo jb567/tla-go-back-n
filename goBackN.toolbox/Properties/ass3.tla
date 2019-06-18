@@ -12,7 +12,9 @@ VARIABLES
     output,
     senderState,
     ackSeqNum,
-    receiverState
+    receiverState,
+    senderStartNum,
+    receiverStartNum
 
 \* Ghost variables
 VARIABLES buffer, n
@@ -20,13 +22,12 @@ VARIABLES buffer, n
 vars == <<dataWireIn, dataWireOut, ackWireIn, ackWireOut, senderIdx, senderPc, output, ackSeqNum, senderState, receiverState, buffer, n>>
 
 sender == INSTANCE slidingSender WITH inputWire <- ackWireOut , outputWire <- dataWireIn, state <- senderState,
-            slidingIdx <- senderIdx, pc <- senderPc
+            slidingIdx <- senderIdx, pc <- senderPc, startNum <- senderStartNum
 
 dataWire == INSTANCE dataWire WITH input <- dataWireIn, output <- dataWireOut
 ackWire == INSTANCE dataWire WITH input <- ackWireIn, output <- ackWireOut
 
-receiver == INSTANCE gbnReceiver WITH inputWire <- dataWireOut, outputWire <- ackWireIn, state <- receiverState
-
+receiver == INSTANCE gbnReceiver WITH inputWire <- dataWireOut, outputWire <- ackWireIn, state <- receiverState, startNum <- receiverStartNum
 multiplace == INSTANCE mpb WITH index <- senderIdx
 Tcp == INSTANCE tcp
 
@@ -36,10 +37,10 @@ Init == /\ sender!Init
         /\ ackWire!Init
         /\ multiplace!Init
 
-Next == /\ \/ sender!Next /\ UNCHANGED <<dataWireOut, ackWireIn, output, ackSeqNum, receiverState>>
-           \/ dataWire!Next /\ UNCHANGED <<ackWireIn, ackWireOut, output, ackSeqNum, senderIdx, senderState, senderPc, receiverState>>
-           \/ ackWire!Next /\ UNCHANGED <<dataWireIn, dataWireOut, output, ackSeqNum, senderIdx, senderState, senderPc, receiverState>>
-           \/ receiver!Next /\ UNCHANGED <<dataWireIn, ackWireOut, senderIdx, senderState, senderPc>>
+Next == /\ \/ sender!Next /\ UNCHANGED <<dataWireOut, ackWireIn, output, ackSeqNum, receiverState, receiverStartNum, receiverStartNum>>
+           \/ dataWire!Next /\ UNCHANGED <<ackWireIn, ackWireOut, output, ackSeqNum, senderIdx, senderState, senderPc, receiverState, senderStartNum, receiverStartNum>>
+           \/ ackWire!Next /\ UNCHANGED <<dataWireIn, dataWireOut, output, ackSeqNum, senderIdx, senderState, senderPc, receiverState, senderStartNum, receiverStartNum>>
+           \/ receiver!Next /\ UNCHANGED <<dataWireIn, ackWireOut, senderIdx, senderState, senderPc, senderStartNum, receiverStartNum>>
         /\ UNCHANGED <<buffer, n>>
 
 
@@ -65,5 +66,5 @@ Properties == /\ <>[](output = MESSAGE)
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Jun 17 18:09:35 NZST 2019 by jb567
+\* Last modified Tue Jun 18 22:00:00 NZST 2019 by jb567
 \* Created Sat Jun 01 15:31:20 NZST 2019 by jb567
